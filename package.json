@@ -1,0 +1,18 @@
+{
+  "name": "zotero-collection-sorter",
+  "version": "0.1.2",
+  "private": true,
+  "description": "Per-collection name sorting for direct child collections in Zotero.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wadaxiyang/zotero-collection-sorter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wadaxiyang/zotero-collection-sorter/issues"
+  },
+  "homepage": "https://github.com/wadaxiyang/zotero-collection-sorter#readme",
+  "scripts": {
+    "test": "node --test"
+  }
+}

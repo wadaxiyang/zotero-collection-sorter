@@ -1,0 +1,8 @@
+{
+  "extensionName": {
+    "message": "分类排序器"
+  },
+  "extensionDescription": {
+    "message": "为 Zotero 中每个分类的直接子分类独立设置名称排序方式。"
+  }
+}

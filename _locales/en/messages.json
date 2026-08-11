@@ -1,0 +1,8 @@
+{
+  "extensionName": {
+    "message": "Collection Sorter"
+  },
+  "extensionDescription": {
+    "message": "Per-collection name sorting for direct child collections in Zotero."
+  }
+}

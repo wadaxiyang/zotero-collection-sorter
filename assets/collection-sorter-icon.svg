@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Collection Sorter for Zotero</title>
+  <desc id="description">A red collection folder with three child rows and a gold bidirectional sorting arrow.</desc>
+
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="#202126"/>
+
+  <path
+    d="M78 116c0-18 14-32 32-32h84l39 38h92c18 0 32 14 32 32v64H78z"
+    fill="#B43D43"
+  />
+  <rect x="68" y="154" width="304" height="272" rx="38" fill="#D55350"/>
+  <path d="M68 192c0-21 17-38 38-38h228c21 0 38 17 38 38v20H68z" fill="#E1665E"/>
+
+  <g fill="#FFF8E9">
+    <rect x="106" y="232" width="224" height="44" rx="14"/>
+    <rect x="106" y="294" width="224" height="44" rx="14"/>
+    <rect x="106" y="356" width="224" height="44" rx="14"/>
+  </g>
+  <g fill="#C74649">
+    <rect x="120" y="243" width="22" height="22" rx="6"/>
+    <rect x="120" y="305" width="22" height="22" rx="6"/>
+    <rect x="120" y="367" width="22" height="22" rx="6"/>
+  </g>
+
+  <path d="M414 132l-51 60h34v128h34V192h34z" fill="#F2B84B"/>
+  <path d="M414 414l51-60h-34V226h-34v128h-34z" fill="#F2B84B"/>
+</svg>
