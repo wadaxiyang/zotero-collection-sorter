@@ -21,6 +21,7 @@ Run `npm test`. The suite covers:
 - Chinese selection for all `zh-*` Zotero locales and English fallback for every non-Chinese locale.
 - localized add-on manager metadata bundles for English, Simplified Chinese, and Traditional Chinese.
 - manifest icon metadata and the existence of its 48px and 96px packaged icon files.
+- canonical SVG background transparency, with transparent PNG variants checked during asset generation.
 
 ## Zotero 9.0.4 integration checklist
 

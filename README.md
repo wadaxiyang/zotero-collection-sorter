@@ -161,8 +161,8 @@ There are no runtime dependencies and no TypeScript, Webpack, React, or similar 
 
 ```bash
 # Update manifest.json and package.json first
-git tag v0.1.2
-git push origin v0.1.2
+git tag v0.1.3
+git push origin v0.1.3
 ```
 
 The tag must match the manifest version exactly.

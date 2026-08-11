@@ -30,7 +30,7 @@ If these members are missing, the plugin fails closed and does not switch to a f
 - `src/rule-store.js` parses, validates, caches, and saves one local JSON preference.
 - `src/sort-engine.js` contains name-only ascending/descending comparison behavior.
 - `src/plugin.js` manages the MenuManager entry, the managed main-window views, the two patches, and local parent rebuilding.
-- `assets/collection-sorter-icon.svg` is the canonical project mark; pre-rendered 48px and 96px PNG variants are referenced by the Zotero manifest.
+- `assets/collection-sorter-icon.svg` is the canonical project mark. It has a transparent background so GitHub and Zotero can supply their own light/dark surfaces; pre-rendered transparent 48px and 96px PNG variants are referenced by the Zotero manifest.
 
 The menu reads the locale already resolved by Zotero in `Zotero.locale`; it does not inspect the operating-system locale or maintain a separate language preference. Standard WebExtension `_locales` bundles localize the add-on manager name and description for English, Simplified Chinese, and Traditional Chinese.
 

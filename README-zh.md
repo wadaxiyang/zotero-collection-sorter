@@ -161,8 +161,8 @@ dist/zotero-collection-sorter-<version>.xpi
 
 ```bash
 # 先更新 manifest.json 和 package.json
-git tag v0.1.2
-git push origin v0.1.2
+git tag v0.1.3
+git push origin v0.1.3
 ```
 
 标签版本必须与 manifest 完全一致。

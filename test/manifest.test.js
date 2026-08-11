@@ -49,3 +49,12 @@ test("add-on manager metadata has English and Chinese locale bundles", () => {
     assert.equal(typeof messages.extensionDescription?.message, "string");
   }
 });
+
+test("the canonical project icon has no fixed page background", () => {
+  const svg = fs.readFileSync(
+    path.join(__dirname, "..", "assets", "collection-sorter-icon.svg"),
+    "utf8"
+  );
+  assert.doesNotMatch(svg, /#202126/i);
+  assert.doesNotMatch(svg, /<rect[^>]+width="480"[^>]+height="480"/i);
+});

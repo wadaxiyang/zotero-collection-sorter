@@ -2,8 +2,6 @@
   <title id="title">Collection Sorter for Zotero</title>
   <desc id="description">A red collection folder with three child rows and a gold bidirectional sorting arrow.</desc>
 
-  <rect x="16" y="16" width="480" height="480" rx="104" fill="#202126"/>
-
   <path
     d="M78 116c0-18 14-32 32-32h84l39 38h92c18 0 32 14 32 32v64H78z"
     fill="#B43D43"
