@@ -10,13 +10,13 @@ const packageMetadata = JSON.parse(
   fs.readFileSync(path.join(__dirname, "..", "package.json"), "utf8")
 );
 
-test("manifest contains every field required by Zotero 9.0.4", () => {
+test("manifest declares compatibility with Zotero 9 and 10", () => {
   const zotero = manifest.applications?.zotero;
   assert.equal(manifest.manifest_version, 2);
   assert.equal(typeof zotero?.id, "string");
   assert.match(zotero?.update_url, /^https:\/\//);
   assert.equal(zotero?.strict_min_version, "9.0");
-  assert.equal(zotero?.strict_max_version, "9.0.*");
+  assert.equal(zotero?.strict_max_version, "10.0.*");
 });
 
 test("package metadata stays aligned with the release manifest", () => {

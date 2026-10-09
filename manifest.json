@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "author": "wadaxiyang",
@@ -15,7 +15,7 @@
       "id": "zotero-collection-sort@local",
       "update_url": "https://collection-sort.invalid/updates.json",
       "strict_min_version": "9.0",
-      "strict_max_version": "9.0.*"
+      "strict_max_version": "10.0.*"
     }
   }
 }

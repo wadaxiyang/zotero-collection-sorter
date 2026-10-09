@@ -286,7 +286,24 @@
     }
 
     function concreteCollectionFromContext(context) {
-      const row = context?.collectionTreeRow;
+      // Zotero 10's plural menu context replaces a singular getter that throws.
+      let row;
+      if (Array.isArray(context?.collectionTreeRows)) {
+        if (context.collectionTreeRows.length !== 1) {
+          return null;
+        }
+        row = context.collectionTreeRows[0];
+      }
+      else {
+        // Zotero 9 supplies only collectionTreeRow. Fail closed for unknown APIs.
+        try {
+          row = context?.collectionTreeRow;
+        }
+        catch (error) {
+          debug("Collection menu context unavailable: " + error);
+          return null;
+        }
+      }
       return row && typeof row.isCollection === "function" && row.isCollection()
         ? row.ref
         : null;
@@ -323,11 +340,55 @@
       }
     }
 
-    function selectedRowID(view) {
-      const focused = view.selection?.focused;
-      return Number.isInteger(focused) && focused >= 0
-        ? view.getRow(focused)?.id || null
+    function captureSelection(view) {
+      const selection = view.selection;
+      const rowIDAt = (index) => Number.isInteger(index) && index >= 0
+        ? view.getRow(index)?.id || null
         : null;
+      const focusedID = rowIDAt(selection?.focused);
+      const selected = selection?.selected;
+      const selectedIDs = selected && typeof selected[Symbol.iterator] === "function"
+        ? Array.from(selected, rowIDAt).filter(Boolean)
+        : (focusedID ? [focusedID] : []);
+      return { selectedIDs, focusedID, pivotID: rowIDAt(selection?.pivot) };
+    }
+
+    async function restoreSelectionState(view, snapshot) {
+      const indexFor = (id) => id ? view.getRowIndexByID(id) : false;
+      const selectedIndexes = snapshot.selectedIDs
+        .map(indexFor)
+        .filter((index) => index !== false);
+      const selection = view.selection;
+
+      // Rebuilding changes row indexes. Restore all IDs in Zotero 10 rather
+      // than collapsing a multi-selection to its focused row.
+      if (
+        selectedIndexes.length > 1
+        && selection?.selected
+        && typeof selection.selected[Symbol.iterator] === "function"
+        && "selectEventsSuppressed" in selection
+      ) {
+        const focusedIndex = indexFor(snapshot.focusedID);
+        const pivotIndex = indexFor(snapshot.pivotID);
+        const wasSuppressed = selection.selectEventsSuppressed;
+        selection.selectEventsSuppressed = true;
+        try {
+          selection.selected = new Set(selectedIndexes);
+          selection.focused = focusedIndex !== false ? focusedIndex : selectedIndexes[0];
+          selection.pivot = pivotIndex !== false ? pivotIndex : selection.focused;
+        }
+        finally {
+          selection.selectEventsSuppressed = wasSuppressed;
+        }
+        return;
+      }
+
+      const id = snapshot.focusedID && indexFor(snapshot.focusedID) !== false
+        ? snapshot.focusedID
+        : snapshot.selectedIDs.find((candidate) => indexFor(candidate) !== false);
+      if (id) {
+        await view.selectByID(id);
+      }
     }
 
     async function rebuildParentChildren(win, collectionID, restoreSelection = true) {
@@ -341,15 +402,15 @@
         return;
       }
 
-      const selectedID = restoreSelection ? selectedRowID(view) : null;
+      const selectionSnapshot = restoreSelection ? captureSelection(view) : null;
 
       view._closeContainer(row);
       const newRow = view.getRowIndexByID("C" + collectionID);
       if (newRow !== false && !view.isContainerOpen(newRow)) {
         await view.toggleOpenState(newRow);
       }
-      if (selectedID && view.getRowIndexByID(selectedID) !== false) {
-        await view.selectByID(selectedID);
+      if (selectionSnapshot) {
+        await restoreSelectionState(view, selectionSnapshot);
       }
     }
 
@@ -389,13 +450,11 @@
         return true;
       });
 
-      const selectedID = selectedRowID(view);
+      const selectionSnapshot = captureSelection(view);
       for (const collection of roots) {
         await rebuildParentChildren(win, collection.id, false);
       }
-      if (selectedID && view.getRowIndexByID(selectedID) !== false) {
-        await view.selectByID(selectedID);
-      }
+      await restoreSelectionState(view, selectionSnapshot);
       debug(`Rebuilt ${roots.length} configured open parent(s) after view patch`);
     }
 
@@ -517,6 +576,8 @@
         rebuildParentChildren,
         rebuildConfiguredOpenParents,
         concreteCollectionFromContext,
+        captureSelection,
+        restoreSelectionState,
         strings
       }
     };
