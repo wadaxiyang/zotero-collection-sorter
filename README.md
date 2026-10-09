@@ -25,7 +25,7 @@
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/wadaxiyang/zotero-collection-sorter?style=flat-square&logo=github&label=release"></a>
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/actions/workflows/release.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/wadaxiyang/zotero-collection-sorter/release.yml?style=flat-square&logo=githubactions&logoColor=white&label=build"></a>
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/releases"><img alt="Total downloads" src="https://img.shields.io/github/downloads/wadaxiyang/zotero-collection-sorter/total?style=flat-square&logo=github&label=downloads"></a>
-  <a href="https://www.zotero.org/"><img alt="Zotero 9.0.x" src="https://img.shields.io/badge/Zotero-9.0.x-CC2936?style=flat-square&logo=zotero&logoColor=white"></a>
+  <a href="https://www.zotero.org/"><img alt="Zotero 9 and 10" src="https://img.shields.io/badge/Zotero-9%20%26%2010-CC2936?style=flat-square&logo=zotero&logoColor=white"></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/wadaxiyang/zotero-collection-sorter?style=flat-square&label=license"></a>
 </p>
 
@@ -96,14 +96,14 @@ An expanded parent is reordered immediately. A collapsed parent uses the selecte
 
 | Component | Status |
 | --- | --- |
-| Zotero Desktop `9.0.x` | **Supported** |
-| Zotero `9.0.6` | **Tested** — latest verified version |
-| Windows | **Tested** |
-| macOS | **Tested** |
+| Zotero Desktop `9.0.x` | **Supported** — verified through Zotero 9.0.6 |
+| Zotero Desktop `10.0.x` | **Declared compatible** — official source audit + targeted regression checks; in-app verification pending |
+| Windows | **Tested** with Zotero 9 |
+| macOS | **Tested** with Zotero 9 |
 | Linux | Platform-neutral code, but **not yet tested directly** |
 | Zotero 7 / Zotero 8 | **Not tested and not declared compatible** |
 
-The manifest intentionally declares compatibility with Zotero `9.0.*` only. The initial internal-source audit used Zotero 9.0.4 (BuildID `20260522110811`), and hands-on verification now covers Zotero 9.0.6 on Windows and macOS.
+Version 0.1.4 declares Zotero `9.0` through `10.0.*` compatibility. Zotero 9 was verified in-app through 9.0.6 on Windows and macOS. Zotero 10 compatibility was checked against the upstream [Zotero 10.0 source](https://github.com/zotero/zotero/tree/10.0) and its [developer migration guide](https://www.zotero.org/support/dev/zotero_10_for_developers), and exercised with focused automated regressions. **Live UI testing on Zotero 10 is still required before claiming full verification.** Zotero 10's multi-selection menu context is handled only for a single concrete collection; the custom sort command is intentionally hidden for mixed or multiple selections.
 
 Because this plugin uses a small set of internal CollectionTree methods, compatibility is deliberately conservative. If a required API is missing, the plugin fails closed instead of installing a risky fallback.
 
@@ -156,13 +156,13 @@ There are no runtime dependencies and no TypeScript, Webpack, React, or similar 
 
 [GitHub Actions](https://github.com/wadaxiyang/zotero-collection-sorter/actions/workflows/release.yml) handles releases:
 
-- A manual workflow run tests and packages the project, then uploads the XPI and SHA-256 files as artifacts.
+- Every push to `main`, and every manual workflow run, tests and packages the project and uploads XPI and SHA-256 artifacts.
 - Pushing a matching `v*` tag additionally publishes a GitHub Release.
 
 ```bash
 # Update manifest.json and package.json first
-git tag v0.1.3
-git push origin v0.1.3
+git tag v0.1.4
+git push origin v0.1.4
 ```
 
 The tag must match the manifest version exactly.
@@ -211,7 +211,7 @@ Malformed JSON and unsupported mode values are ignored safely.
 
 - Rules do not sync between devices.
 - Natural numeric ordering, year detection, multi-key sorting, and custom drag ordering are intentionally unsupported.
-- Zotero 7, Zotero 8, and Linux have not been tested directly.
+- Zotero 10 has been source-audited and regression-tested but not yet verified in a live Zotero 10 UI. Zotero 7, Zotero 8, and Linux have not been tested directly.
 - Major Zotero or CollectionTree changes require a new compatibility review.
 - Automatic plugin updates are not yet configured; install newer XPI releases manually.
 

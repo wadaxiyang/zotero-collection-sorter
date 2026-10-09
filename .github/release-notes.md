@@ -1,6 +1,6 @@
 ## Compatibility / 兼容性
 
-- **Zotero:** Zotero Desktop `9.0.x`, tested through Zotero `9.0.6` / 支持 Zotero Desktop `9.0.x`，已测试至 Zotero `9.0.6`
+- **Zotero:** Zotero Desktop `9.0.x` and `10.0.x`; Zotero 9 tested through 9.0.6, Zotero 10 source-audited + unit-tested (desktop verification pending) / 兼容 Zotero 9 与 10；9 已实机验证至 9.0.6，10 已源码核对与单测但尚待实机验证
 - **Tested platforms / 已测试平台:** Windows and macOS / Windows 与 macOS
 - **Linux:** Platform-neutral code, but not yet tested directly / 代码不依赖平台专属 API，但尚未实机测试
 - **Zotero 7/8:** Not tested and not declared compatible by this release / 尚未测试，本版本未声明兼容且无法安装
@@ -19,3 +19,10 @@
 Download the `.xpi` file below and install it from **Zotero → Tools → Plugins → Install Plugin From File…**.
 
 请下载下方 `.xpi`，然后通过 **Zotero → 工具 → 插件 → Install Plugin From File…** 安装。
+
+## Zotero 10 compatibility fix / Zotero 10 兼容修复
+
+- Uses Zotero 10's plural collection menu context while retaining Zotero 9's singular context.
+- Rebuilds the local collection tree without discarding Zotero 10 multi-selection, focus, or pivot.
+- Keeps existing local sorting rules unchanged; no migration or data modification.
+- 兼容新旧右键菜单 API，尽量恢复 Zotero 10 多选与焦点，不改变原有本地规则。

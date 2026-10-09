@@ -2,14 +2,14 @@
 
 ## Verified Zotero source baseline
 
-The installed and running application was inspected before implementation:
+The original installed and running Zotero 9 application was inspected before implementation:
 
 - Zotero version: 9.0.4
 - Application BuildID: `20260522110811`
 - Gecko platform BuildID: `20260414220523`
 - Application source archive: `/Applications/Zotero.app/Contents/Resources/app/omni.ja`
 
-The internal API audit above remains tied to the exact 9.0.4 build. Subsequent hands-on compatibility testing on Windows and macOS has verified the plugin through Zotero 9.0.6. Zotero 7, Zotero 8, and Linux have not been tested directly; the current manifest intentionally declares only Zotero 9.0.x compatibility.
+The original internal API audit above remains tied to the exact 9.0.4 build. Subsequent hands-on compatibility testing on Windows and macOS verified the plugin through Zotero 9.0.6. Version 0.1.4 declares Zotero 9.0–10.0.x compatibility; Zotero 10 has been **source-audited and regression-checked, but not yet live UI-tested**. Zotero 7, Zotero 8, and Linux have not been tested directly.
 
 Confirmed in that exact build:
 
@@ -18,10 +18,20 @@ Confirmed in that exact build:
 - collection add and collection modify/move paths call `collectionsView._addSortedRow("collection", id)`.
 - `_addSortedRow()`, `_addRow()`, `_includedInTree()`, `_closeContainer()`, `toggleOpenState()`, and the row/container query methods are present.
 - `Zotero.MenuManager` accepts target `main/library/collection`.
-- In Zotero 9.0.4, the menu context contains singular `collectionTreeRow`; the implementation intentionally follows the installed source rather than the manual's provisional plural example.
+- Zotero 9 menu contexts contain singular `collectionTreeRow`; Zotero 10 supplies plural `collectionTreeRows` and throws if the singular getter is read. The plugin prefers plural when present and safely falls back to singular for Zotero 9.
 - Zotero 9.0.4's manifest parser requires `applications.zotero.update_url`. This project uses the reserved, non-resolving `.invalid` URL `https://collection-sort.invalid/updates.json` as a local-development placeholder; no update service is implemented.
 
 If these members are missing, the plugin fails closed and does not switch to a full-tree refresh strategy.
+
+## Zotero 10 source audit (2026-10-09)
+
+Compared upstream [Zotero 9.0](https://github.com/zotero/zotero/tree/9.0) and [Zotero 10.0](https://github.com/zotero/zotero/tree/10.0) branches:
+
+- `Zotero.CollectionTreeRow.prototype.getChildren()` still delegates concrete collection children to `Zotero.Collections.getByParent()`; the display-only wrapper remains applicable.
+- `CollectionTree._addSortedRow('collection', id)` retains the same incremental sibling-insertion structure in both branches. The plugin keeps its narrowly scoped custom comparison, and delegates default/search/root cases to Zotero.
+- The [official Zotero 10 migration notes](https://www.zotero.org/support/dev/zotero_10_for_developers) identify a breaking change to the `main/library/collection` MenuManager context: `collectionTreeRow` now throws; `collectionTreeRows` is the supported replacement.
+- Zotero 10's tree selection contains a set of selected row indexes. After a local collapse/re-expand, the plugin now maps previously selected stable row IDs back to new indexes and restores focus/pivot when more than one row remains selected.
+- Regression coverage uses mocked menu contexts and selection behavior. **This is not a substitute for testing with the actual Zotero 10 UI.**
 
 ## Architecture
 
@@ -61,7 +71,7 @@ Plugin runtime files contain no filesystem paths, process execution, platform ch
 
 ## Known compatibility limits
 
-- Internal CollectionTree APIs can change even within a Zotero release family. The manifest is capped at `9.0.*`, and runtime feature detection guards every required view.
-- The verified UI baseline is macOS. Windows is a required runtime target and the code is platform-neutral, but radio rendering and the complete integration matrix still need hands-on Windows Zotero 9 verification before a production release claim.
+- Internal CollectionTree APIs can change even within a Zotero release family. The manifest is capped at `10.0.*` with `9.0` as the minimum, and runtime feature detection guards every required view.
+- Zotero 9 has been directly tested on Windows and macOS through 9.0.6. Zotero 10 menu behavior, multi-selection restoration, and platform-specific rendering still require hands-on verification before a fully verified Zotero 10 release claim.
 - Rules are intentionally local and do not sync between Zotero profiles or machines.
 - A production distribution must replace the reserved local-development `update_url` with a real HTTPS update manifest endpoint.

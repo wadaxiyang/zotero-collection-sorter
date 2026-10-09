@@ -1,6 +1,6 @@
 # Test record
 
-Compatibility verification currently covers Zotero 9.0.x through Zotero 9.0.6 on Windows and macOS. Zotero 7, Zotero 8, and Linux have not been tested directly and are not claimed as verified platforms/versions.
+Hands-on verification covers Zotero 9.0.x through Zotero 9.0.6 on Windows and macOS. Zotero 10 was audited against official upstream source and is covered by focused mocked API regressions, **not yet by live Zotero 10 tests**. Zotero 7, Zotero 8, and Linux have not been tested directly.
 
 ## Automated tests
 
@@ -21,6 +21,9 @@ Run `npm test`. The suite covers:
 - Chinese selection for all `zh-*` Zotero locales and English fallback for every non-Chinese locale.
 - localized add-on manager metadata bundles for English, Simplified Chinese, and Traditional Chinese.
 - manifest icon metadata and the existence of its 48px and 96px packaged icon files.
+- Zotero 9 singular menu context compatibility.
+- Zotero 10 plural menu context, including an intentionally throwing legacy getter and hidden multi-selection menus.
+- Zotero 10 tree selection snapshot/restore across reordering with focus and pivot preservation.
 - canonical SVG background transparency, with transparent PNG variants checked during asset generation.
 
 ## Zotero 9.0.4 integration checklist
@@ -40,3 +43,15 @@ Run `npm test`. The suite covers:
 - [ ] Read-only group collection allows local display sorting.
 
 The checklist is recorded as passed only after direct observation. Automated source/unit tests are not substituted for UI results.
+
+## Zotero 10.0.x integration checklist (pending)
+
+- [ ] Install 0.1.4 XPI on Zotero 10.0.x without compatibility warnings.
+- [ ] Right-click one collection to see the three radio modes; multiple or mixed selected rows do not offer an ambiguous sort command.
+- [ ] Toggle each mode on open/collapsed parents; subcollections appear in the requested order.
+- [ ] Create, rename, move, and sync new subcollections; default and custom rules behave independently.
+- [ ] Select multiple collections (including children under a configured parent), change a rule and check that all visible selections plus focus remain preserved.
+- [ ] Reopen an existing profile with expanded configured parents; sorting and multi-selection restoration remain correct.
+- [ ] Verify no duplicate menus, crashes, or changes to collection metadata; disable/uninstall safely restore default behavior.
+
+These remain unchecked until a Zotero 10 desktop integration run is recorded.

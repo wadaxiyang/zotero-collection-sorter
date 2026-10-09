@@ -25,7 +25,7 @@
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/releases/latest"><img alt="最新版本" src="https://img.shields.io/github/v/release/wadaxiyang/zotero-collection-sorter?style=flat-square&logo=github&label=release"></a>
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/actions/workflows/release.yml"><img alt="构建状态" src="https://img.shields.io/github/actions/workflow/status/wadaxiyang/zotero-collection-sorter/release.yml?style=flat-square&logo=githubactions&logoColor=white&label=build"></a>
   <a href="https://github.com/wadaxiyang/zotero-collection-sorter/releases"><img alt="下载次数" src="https://img.shields.io/github/downloads/wadaxiyang/zotero-collection-sorter/total?style=flat-square&logo=github&label=downloads"></a>
-  <a href="https://www.zotero.org/"><img alt="Zotero 9.0.x" src="https://img.shields.io/badge/Zotero-9.0.x-CC2936?style=flat-square&logo=zotero&logoColor=white"></a>
+  <a href="https://www.zotero.org/"><img alt="Zotero 9 和 10" src="https://img.shields.io/badge/Zotero-9%20%26%2010-CC2936?style=flat-square&logo=zotero&logoColor=white"></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/wadaxiyang/zotero-collection-sorter?style=flat-square&label=license"></a>
 </p>
 
@@ -96,14 +96,14 @@ Collection Sorter 为 Zotero 左侧分类树增加一个专注的能力：每个
 
 | 组件 | 状态 |
 | --- | --- |
-| Zotero Desktop `9.0.x` | **支持** |
-| Zotero `9.0.6` | **已测试**，目前验证的最新版本 |
-| Windows | **已测试** |
-| macOS | **已测试** |
+| Zotero Desktop `9.0.x` | **支持**，实机验证至 Zotero 9.0.6 |
+| Zotero Desktop `10.0.x` | **已声明兼容**，完成官方源码核对与针对性回归检查；尚待实机验证 |
+| Windows | **已在 Zotero 9 测试** |
+| macOS | **已在 Zotero 9 测试** |
 | Linux | 代码不依赖平台专属 API，但**尚未实机测试** |
 | Zotero 7 / Zotero 8 | **未测试且当前未声明兼容** |
 
-manifest 目前只声明兼容 Zotero `9.0.*`。最初的内部源码核对基线为 Zotero 9.0.4（BuildID `20260522110811`），目前已经在 Windows 和 macOS 上实际验证至 Zotero 9.0.6。
+0.1.4 版 manifest 声明兼容 Zotero `9.0` 至 `10.0.*`。此前 Zotero 9 已在 Windows 和 macOS 上实机验证至 9.0.6；Zotero 10 依据[官方 10.0 源码](https://github.com/zotero/zotero/tree/10.0)及[插件迁移说明](https://www.zotero.org/support/dev/zotero_10_for_developers)完成了静态核对，并添加针对性自动化回归测试。**尚未进行 Zotero 10 实机 UI 验证，不能将其标记为实机测试通过。** 在 Zotero 10 多选分类时，排序菜单仅对恰好一个具体分类显示，避免歧义。
 
 由于插件会以最小范围调用 CollectionTree 内部方法，因此兼容性声明保持谨慎。如果未来缺失必要 API，插件会 fail closed，不会启用危险的降级方案。
 
@@ -156,13 +156,13 @@ dist/zotero-collection-sorter-<version>.xpi
 
 [GitHub Actions](https://github.com/wadaxiyang/zotero-collection-sorter/actions/workflows/release.yml) 负责发布流程：
 
-- 手动运行 Workflow：测试并构建项目，上传 XPI 和 SHA-256 artifact。
+- 推送至 `main` 或手动运行 Workflow：测试并构建项目，上传 XPI 和 SHA-256 artifact。
 - 推送匹配的 `v*` 标签：在以上步骤完成后自动创建 GitHub Release。
 
 ```bash
 # 先更新 manifest.json 和 package.json
-git tag v0.1.3
-git push origin v0.1.3
+git tag v0.1.4
+git push origin v0.1.4
 ```
 
 标签版本必须与 manifest 完全一致。
@@ -211,7 +211,7 @@ extensions.zotero.collectionSort.rules
 
 - 规则不会在设备之间同步。
 - 不支持自然数字排序、年份识别、多键排序或自定义拖拽顺序。
-- Zotero 7、Zotero 8 和 Linux 尚未实机测试。
+- Zotero 10 已完成官方源码核对与回归测试，但尚未在正式版 UI 实机验证；Zotero 7、Zotero 8 和 Linux 也未实机测试。
 - Zotero 大版本或 CollectionTree 内部实现变化后需要重新核对兼容性。
 - 尚未配置插件自动更新；请手动安装新版 XPI。
 
